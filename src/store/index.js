@@ -1,19 +1,7 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
+import {todoSlice} from "./todoSlice";
 
-const counterSlice = createSlice({
-  name: "counter",
-  initialState: {
-    todos: []
-  },
-  reducers:{
-    setTodo: (state, action) => {
-      state.todos.push(action.payload)
-    }
-  }
-});
-
-export const actions = counterSlice.actions;
 
 export const store = configureStore({
-  reducer: counterSlice.reducer,
+  reducer: todoSlice.reducer,
 });
