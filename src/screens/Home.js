@@ -12,6 +12,7 @@ import {
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { actions } from "../store";
+import TodoItem from "../components/TodoItem";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -19,24 +20,32 @@ const Home = () => {
 
   const [data, setData] = useState("");
 
-  const changeName = () => {
+  const addTodoItem = () => {
     Keyboard.dismiss();
-    dispatch(
-      actions.setTodo(
-        (payload = {
-          id: Math.floor(Math.random() * 100000).toString(),
-          todo: data,
-        })
-      )
-    );
-    setData("");
+    if (data === "") {
+      console.warn("Input cannot be empty");
+    } else {
+      dispatch(
+        actions.setTodo(
+          ({
+            id: Math.floor(Math.random() * 100000).toString(),
+            todo: data,
+          })
+        )
+      );
+      setData("");
+    }
+  };
+
+  const deleteItem = (id) => {
+    console.log("Delete");
   };
 
   return (
     <SafeAreaView style={styles.container}>
       {/* the header for todo Input */}
       <View style={styles.inputWrapper}>
-        <TouchableHighlight style={styles.button} onPress={changeName}>
+        <TouchableHighlight style={styles.button} onPress={addTodoItem}>
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableHighlight>
         <TextInput
@@ -64,10 +73,11 @@ const Home = () => {
           data={todos}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <>
-              <Text>{item.todo}</Text>
-              <Text>{item.id}</Text>
-            </>
+            <TodoItem
+              title={item.todo}
+              onPressHandler={deleteItem}
+              id={item.id}
+            />
           )}
         />
       </View>
@@ -80,9 +90,9 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 40,
+    marginTop: 50,
     alignItems: "center",
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
   inputWrapper: {
     width: "100%",
@@ -95,7 +105,7 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     justifyContent: "center",
     alignItems: "center",
-    padding: 8,
+    padding: 13,
     borderRadius: 5,
     borderColor: "#ccc",
   },
@@ -111,10 +121,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: "80%",
     marginRight: 8,
+    paddingVertical: 8,
   },
   todoWrapper: {
     width: "100%",
-    backgroundColor: "red",
     flex: 1,
   },
 });
