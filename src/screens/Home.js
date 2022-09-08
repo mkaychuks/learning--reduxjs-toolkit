@@ -38,7 +38,7 @@ const Home = () => {
   };
 
   const deleteItem = (id) => {
-    console.log("Delete");
+    dispatch(actions.deleteTodo(id))
   };
 
   return (
