@@ -11,12 +11,12 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { actions } from "../store";
+import { todoActions } from "../store/todoSlice";
 import TodoItem from "../components/TodoItem";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const todos = useSelector((state) => state.todos);
+  const todos = useSelector((state) => state.todo.todos);
 
   const [data, setData] = useState("");
 
@@ -26,19 +26,17 @@ const Home = () => {
       console.warn("Input cannot be empty");
     } else {
       dispatch(
-        actions.setTodo(
-          ({
-            id: Math.floor(Math.random() * 100000).toString(),
-            todo: data,
-          })
-        )
+        todoActions.setTodo({
+          id: Math.floor(Math.random() * 100000).toString(),
+          todo: data,
+        })
       );
       setData("");
     }
   };
 
   const deleteItem = (id) => {
-    dispatch(actions.deleteTodo(id))
+    dispatch(todoActions.deleteTodo(id));
   };
 
   return (
@@ -90,7 +88,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 30,
     alignItems: "center",
     paddingHorizontal: 20,
   },
